@@ -8,15 +8,27 @@ const ExplanationDisplay = ({ explanation, isLoading, error }) => {
   if (isLoading) {
     return (
       <motion.div 
-        className="bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-dark-border shadow-sm h-full flex items-center justify-center"
+        className="rounded-xl border hover-lift h-full flex items-center justify-center"
+        style={{
+          background: 'var(--card-bg)',
+          borderColor: 'var(--border-color)',
+        }}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
       >
         <div className="text-center">
-          <SafeIcon icon={FiLoader} className="w-8 h-8 text-dark-accent animate-spin mx-auto mb-4" />
-          <p className="text-gray-600 dark:text-dark-muted">
-            Analyzing documentation and generating explanation...
+          <div className="relative mb-6">
+            <div className="w-16 h-16 rounded-full bg-gradient-1 mx-auto flex items-center justify-center">
+              <SafeIcon icon={FiLoader} className="w-8 h-8 text-white animate-spin" />
+            </div>
+            <div className="absolute inset-0 rounded-full bg-gradient-1 opacity-20 animate-pulse"></div>
+          </div>
+          <h3 className="text-xl font-bold mb-2 gradient-text">
+            Analyzing Documentation
+          </h3>
+          <p className="text-secondary">
+            Our AI is breaking down your content into digestible insights...
           </p>
         </div>
       </motion.div>
@@ -26,17 +38,23 @@ const ExplanationDisplay = ({ explanation, isLoading, error }) => {
   if (error) {
     return (
       <motion.div 
-        className="bg-white dark:bg-dark-card rounded-xl border border-red-200 dark:border-red-800 shadow-sm h-full flex items-center justify-center"
+        className="rounded-xl border h-full flex items-center justify-center"
+        style={{
+          background: 'var(--card-bg)',
+          borderColor: 'rgba(255, 109, 146, 0.3)',
+        }}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
       >
         <div className="text-center p-8">
-          <SafeIcon icon={FiAlertCircle} className="w-8 h-8 text-red-500 mx-auto mb-4" />
-          <p className="text-red-600 dark:text-red-400 mb-2">
-            Oops! Something went wrong
-          </p>
-          <p className="text-gray-600 dark:text-dark-muted text-sm">
+          <div className="w-16 h-16 rounded-full bg-gradient-to-r from-red-500 to-pink-500 mx-auto flex items-center justify-center mb-4">
+            <SafeIcon icon={FiAlertCircle} className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-xl font-bold mb-2 text-red-400">
+            Something went wrong
+          </h3>
+          <p className="text-secondary text-sm">
             {error}
           </p>
         </div>
@@ -47,17 +65,23 @@ const ExplanationDisplay = ({ explanation, isLoading, error }) => {
   if (!explanation) {
     return (
       <motion.div 
-        className="bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-dark-border shadow-sm h-full flex items-center justify-center"
+        className="rounded-xl border hover-lift h-full flex items-center justify-center"
+        style={{
+          background: 'var(--card-bg)',
+          borderColor: 'var(--border-color)',
+        }}
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
       >
         <div className="text-center p-8">
-          <SafeIcon icon={FiBook} className="w-12 h-12 text-gray-400 dark:text-dark-muted mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 dark:text-dark-text mb-2">
-            Ready to Explain
+          <div className="w-16 h-16 rounded-full bg-gradient-2 mx-auto flex items-center justify-center mb-6">
+            <SafeIcon icon={FiBook} className="w-8 h-8 text-white" />
+          </div>
+          <h3 className="text-2xl font-bold mb-4">
+            Ready to <span className="gradient-text">Explain</span>
           </h3>
-          <p className="text-gray-600 dark:text-dark-muted">
+          <p className="text-lg text-secondary">
             Paste documentation, enter a URL, or upload a file to get started
           </p>
         </div>
@@ -65,115 +89,150 @@ const ExplanationDisplay = ({ explanation, isLoading, error }) => {
     );
   }
 
+  const sections = [
+    {
+      id: 'summary',
+      title: 'Summary',
+      icon: FiBook,
+      color: 'text-primary',
+      delay: 0.1
+    },
+    {
+      id: 'analogy',
+      title: 'Simple Analogy',
+      icon: FiZap,
+      color: 'text-yellow-500',
+      delay: 0.2
+    },
+    {
+      id: 'codeExample',
+      title: 'Code Example',
+      icon: FiCode,
+      color: 'text-green-500',
+      delay: 0.3
+    },
+    {
+      id: 'useCases',
+      title: 'When to Use This',
+      icon: FiTarget,
+      color: 'text-blue-500',
+      delay: 0.4
+    },
+    {
+      id: 'keyPoints',
+      title: 'Key Points to Remember',
+      icon: FiList,
+      color: 'text-purple-500',
+      delay: 0.5
+    }
+  ];
+
   return (
     <motion.div 
-      className="bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-dark-border shadow-sm h-full overflow-hidden"
+      className="rounded-xl border hover-lift h-full overflow-hidden"
+      style={{
+        background: 'var(--card-bg)',
+        borderColor: 'var(--border-color)',
+      }}
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.4 }}
     >
       <div className="p-6 h-full overflow-y-auto">
         <div className="space-y-8">
-          {/* Summary */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <SafeIcon icon={FiBook} className="w-5 h-5 text-dark-accent" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text">
-                Summary
-              </h2>
-            </div>
-            <div className="prose prose-gray dark:prose-invert max-w-none">
-              {explanation.summary.split('\n').map((paragraph, index) => (
-                <p key={index} className="text-gray-700 dark:text-dark-text leading-relaxed mb-4">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          </motion.section>
-
-          {/* Analogy */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <SafeIcon icon={FiZap} className="w-5 h-5 text-yellow-500" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text">
-                Simple Analogy
-              </h2>
-            </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/10 border border-yellow-200 dark:border-yellow-800/30 rounded-lg p-4">
-              <p className="text-gray-700 dark:text-dark-text leading-relaxed">
-                {explanation.analogy}
-              </p>
-            </div>
-          </motion.section>
-
-          {/* Code Example */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <SafeIcon icon={FiCode} className="w-5 h-5 text-green-500" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text">
-                Code Example
-              </h2>
-            </div>
-            <CodeHighlight code={explanation.codeExample} language="javascript" />
-          </motion.section>
-
-          {/* Use Cases */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <SafeIcon icon={FiTarget} className="w-5 h-5 text-blue-500" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text">
-                When to Use This
-              </h2>
-            </div>
-            <div className="grid gap-3">
-              {explanation.useCases.map((useCase, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-gray-700 dark:text-dark-text">{useCase}</p>
+          {sections.map((section) => (
+            <motion.section
+              key={section.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: section.delay }}
+              className="hover-lift"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className={`p-2 rounded-lg bg-gradient-1`}>
+                  <SafeIcon icon={section.icon} className="w-5 h-5 text-white" />
                 </div>
-              ))}
-            </div>
-          </motion.section>
+                <h2 className="text-xl font-bold gradient-text">
+                  {section.title}
+                </h2>
+              </div>
 
-          {/* Key Points */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <SafeIcon icon={FiList} className="w-5 h-5 text-purple-500" />
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text">
-                Key Points to Remember
-              </h2>
-            </div>
-            <div className="space-y-3">
-              {explanation.keyPoints.map((point, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <div className="w-6 h-6 bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-full flex items-center justify-center text-sm font-medium flex-shrink-0">
-                    {index + 1}
-                  </div>
-                  <p className="text-gray-700 dark:text-dark-text">{point}</p>
+              {section.id === 'summary' && (
+                <div className="prose prose-gray max-w-none">
+                  {explanation.summary.split('\n').map((paragraph, index) => (
+                    <p key={index} className="leading-relaxed mb-4 text-secondary">
+                      {paragraph}
+                    </p>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </motion.section>
+              )}
+
+              {section.id === 'analogy' && (
+                <div 
+                  className="rounded-xl p-6 border"
+                  style={{
+                    background: 'var(--gradient-2)',
+                    borderColor: 'var(--border-color)',
+                  }}
+                >
+                  <p className="text-white leading-relaxed font-medium">
+                    {explanation.analogy}
+                  </p>
+                </div>
+              )}
+
+              {section.id === 'codeExample' && (
+                <div className="rounded-xl overflow-hidden">
+                  <CodeHighlight 
+                    code={explanation.codeExample} 
+                    language="javascript" 
+                  />
+                </div>
+              )}
+
+              {section.id === 'useCases' && (
+                <div className="grid gap-4">
+                  {explanation.useCases.map((useCase, index) => (
+                    <motion.div
+                      key={index}
+                      className="flex items-start gap-3 p-4 rounded-xl border hover-lift"
+                      style={{
+                        background: 'var(--sidebar-bg)',
+                        borderColor: 'var(--border-color)',
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="w-6 h-6 bg-gradient-1 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                        <span className="text-white text-xs font-bold">{index + 1}</span>
+                      </div>
+                      <p className="text-secondary">{useCase}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+
+              {section.id === 'keyPoints' && (
+                <div className="space-y-4">
+                  {explanation.keyPoints.map((point, index) => (
+                    <motion.div
+                      key={index}
+                      className="flex items-start gap-4 p-4 rounded-xl border hover-lift"
+                      style={{
+                        background: 'var(--sidebar-bg)',
+                        borderColor: 'var(--border-color)',
+                      }}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="w-8 h-8 bg-gradient-2 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span className="text-white text-sm font-bold">{index + 1}</span>
+                      </div>
+                      <p className="text-secondary pt-1">{point}</p>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </motion.section>
+          ))}
         </div>
       </div>
     </motion.div>

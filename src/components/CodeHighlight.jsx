@@ -3,15 +3,19 @@ import { Highlight, themes } from 'prism-react-renderer';
 
 const CodeHighlight = ({ code, language = 'javascript' }) => {
   return (
-    <Highlight theme={themes.vsDark} code={code} language={language}>
+    <Highlight
+      theme={themes.vsDark}
+      code={code}
+      language={language}
+    >
       {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <div className="relative">
-          <pre 
-            className={`${className} p-4 rounded-lg overflow-x-auto text-sm font-mono`}
+          <pre
+            className={`${className} p-6 rounded-xl overflow-x-auto text-sm font-mono border`}
             style={{
               ...style,
-              backgroundColor: '#0a0a0a',
-              border: '1px solid #1a1a1a'
+              background: 'var(--sidebar-bg)',
+              borderColor: 'var(--border-color)',
             }}
           >
             {tokens.map((line, i) => (
@@ -22,6 +26,12 @@ const CodeHighlight = ({ code, language = 'javascript' }) => {
               </div>
             ))}
           </pre>
+          
+          {/* Gradient overlay for visual appeal */}
+          <div 
+            className="absolute top-0 left-0 right-0 h-1 rounded-t-xl"
+            style={{ background: 'var(--gradient-1)' }}
+          />
         </div>
       )}
     </Highlight>

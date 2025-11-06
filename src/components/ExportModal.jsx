@@ -10,24 +10,21 @@ const ExportModal = ({ isOpen, onClose, onExport, explanation }) => {
       title: 'Markdown File',
       description: 'Download as .md file for documentation',
       icon: FiFileText,
-      color: 'text-blue-500',
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20'
+      gradient: 'from-blue-500 to-cyan-500'
     },
     {
       id: 'html',
       title: 'HTML Document',
       description: 'Download as .html file (easily convert to PDF)',
       icon: FiCode,
-      color: 'text-green-500',
-      bgColor: 'bg-green-50 dark:bg-green-900/20'
+      gradient: 'from-green-500 to-emerald-500'
     },
     {
       id: 'share',
       title: 'Share Link',
       description: 'Copy shareable link to clipboard',
       icon: FiShare2,
-      color: 'text-purple-500',
-      bgColor: 'bg-purple-50 dark:bg-purple-900/20'
+      gradient: 'from-purple-500 to-pink-500'
     }
   ];
 
@@ -40,14 +37,18 @@ const ExportModal = ({ isOpen, onClose, onExport, explanation }) => {
     <AnimatePresence>
       {isOpen && (
         <motion.div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 backdrop-blur-sm"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           onClick={onClose}
         >
           <motion.div
-            className="bg-white dark:bg-dark-card rounded-xl border border-gray-200 dark:border-dark-border shadow-xl max-w-md w-full"
+            className="rounded-xl border shadow-2xl max-w-md w-full"
+            style={{
+              background: 'var(--bg-dark)',
+              borderColor: 'var(--border-color)',
+            }}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -55,53 +56,62 @@ const ExportModal = ({ isOpen, onClose, onExport, explanation }) => {
           >
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-dark-text">
+                <h2 className="text-2xl font-bold gradient-text">
                   Export Explanation
                 </h2>
                 <button
                   onClick={onClose}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-dark-hover rounded-lg transition-colors"
+                  className="p-2 hover:bg-card-bg rounded-lg transition-colors"
                 >
-                  <SafeIcon icon={FiX} className="w-5 h-5 text-gray-500 dark:text-dark-muted" />
+                  <SafeIcon icon={FiX} className="w-5 h-5 text-muted" />
                 </button>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {exportOptions.map((option) => (
-                  <button
+                  <motion.button
                     key={option.id}
                     onClick={() => handleExport(option.id)}
                     disabled={!explanation}
-                    className={`w-full p-4 rounded-lg border transition-all text-left ${
-                      explanation
-                        ? 'border-gray-200 dark:border-dark-border hover:border-dark-accent dark:hover:border-dark-accent hover:shadow-sm'
-                        : 'border-gray-200 dark:border-dark-border opacity-50 cursor-not-allowed'
+                    className={`w-full p-4 rounded-xl border transition-all text-left hover-lift ${
+                      explanation 
+                        ? 'hover:border-primary' 
+                        : 'opacity-50 cursor-not-allowed'
                     }`}
+                    style={{
+                      background: 'var(--card-bg)',
+                      borderColor: 'var(--border-color)',
+                    }}
+                    whileHover={explanation ? { scale: 1.02 } : {}}
+                    whileTap={explanation ? { scale: 0.98 } : {}}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`p-2 rounded-lg ${option.bgColor}`}>
-                        <SafeIcon icon={option.icon} className={`w-5 h-5 ${option.color}`} />
+                      <div className={`p-3 rounded-lg bg-gradient-to-r ${option.gradient}`}>
+                        <SafeIcon icon={option.icon} className="w-5 h-5 text-white" />
                       </div>
                       <div className="flex-1">
-                        <h3 className="font-medium text-gray-900 dark:text-dark-text">
+                        <h3 className="font-semibold mb-1">
                           {option.title}
                         </h3>
-                        <p className="text-sm text-gray-600 dark:text-dark-muted">
+                        <p className="text-sm text-secondary">
                           {option.description}
                         </p>
                       </div>
-                      <SafeIcon 
-                        icon={FiDownload} 
-                        className="w-4 h-4 text-gray-400 dark:text-dark-muted" 
-                      />
+                      <SafeIcon icon={FiDownload} className="w-4 h-4 text-muted" />
                     </div>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
 
               {!explanation && (
-                <div className="mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/30 rounded-lg">
-                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                <div 
+                  className="mt-6 p-4 rounded-xl border"
+                  style={{
+                    background: 'rgba(255, 152, 39, 0.1)',
+                    borderColor: 'rgba(255, 152, 39, 0.3)',
+                  }}
+                >
+                  <p className="text-sm text-primary">
                     Generate an explanation first to enable export options.
                   </p>
                 </div>
